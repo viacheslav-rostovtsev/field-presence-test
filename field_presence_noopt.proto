@@ -1,0 +1,43 @@
+syntax = "proto3";
+package endless.trash.forever;
+
+option ruby_package = "So::Much::Trash";
+
+import "google/api/client.proto";
+
+// A service that exposes the messages testing various combinations of path patterns
+service FieldPresence {
+  option (google.api.default_host) = "endlesstrash.example.net";
+
+  rpc SimplePatternMethod(FieldPresenceRequest) returns(Response) {
+  }
+}
+
+message FieldPresenceRequest {
+  // Optional fields track presence.
+  int32 a = 1;
+  int64 b = 2;
+  string c = 3;
+  double d = 4;
+
+  enum E {
+    E_NONE = 0;
+    E_FOO = 1;
+    E_BAR = 2;
+  }
+  E e = 5;
+
+  // For sub-message fields, "optional" is not a semantic change since proto3
+  // messages always have presence.  For consistency, we allow the keyword even
+  // though it has no semantic effect.
+  FieldPresenceRequest foo = 6;
+
+  // Fields that omit "optional" have the same semantics they currently have in
+  // proto3.  In this document we refer to these as "plain" fields.
+  int32 x = 11;
+  int64 y = 12;
+  string w = 13;
+  double z = 14;
+}
+
+message Response { }
